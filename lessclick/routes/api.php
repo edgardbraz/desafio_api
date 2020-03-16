@@ -34,12 +34,29 @@ Route::group(['middleware' => 'auth:api', 'prefix'=>"/"], function() {
     Route::group(['prefix'=>"/evento"], function() {
         Route::get('/', 'EventController@index');
         Route::post('/', 'EventController@store');
-        
-        //Slug parameter
-        Route::get('/{event}', 'EventController@show');
-        Route::put('/{event}', 'EventController@update');
-        Route::delete('/{event}', 'EventController@destroy');
-    });
 
+        //Slug parameter
+        Route::group(['prefix'=>"/{event}"], function() {
+            Route::get('/', 'EventController@show');
+            Route::put('/', 'EventController@update');
+            Route::delete('/', 'EventController@destroy');
+
+            /**
+             * Ticket endpoint
+             **/ 
+            Route::group(['prefix'=>"/ingresso"], function() {
+                Route::get('/', 'TicketController@index');
+            });
+
+            /**
+             * Cart endpoint
+             **/ 
+            Route::group(['prefix'=>"/cart"], function() {
+                Route::post('/', 'SalesController@store');
+                Route::post('/clear', 'SalesController@clear');
+            });
+
+        });
+    });
 
 });
