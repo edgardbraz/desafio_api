@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Illuminate\Database\QueryException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -50,9 +52,17 @@ class Handler extends ExceptionHandler
         {
             return response()->json([
                 'success' => false,
-                'message' => 'There are no registers with the given ID.'
-            ], 200);
+                'message' => $exception->getMessage()
+            ], 422);
         }
+
+        if($exception instanceof QueryException) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], 422);
+        }
+
         return parent::render($request, $exception);
     }
 }

@@ -9,7 +9,8 @@ class RestController extends Controller
     const SUCCESS = 200; 
     const CREATED = 201;
     const NOT_FOUND = 404;
-
+    const NOT_PROCESSED = 422;
+    
     public function success($code, $data = null, $message = null) {
         $response = [
             'success' => true, 

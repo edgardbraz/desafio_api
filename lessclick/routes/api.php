@@ -28,5 +28,18 @@ Route::group(['middleware' => 'auth:api', 'prefix'=>"/"], function() {
         Route::delete('/{user}', 'UserController@destroy');
     });
 
+    /**
+     * Event endpoint
+     **/ 
+    Route::group(['prefix'=>"/evento"], function() {
+        Route::get('/', 'EventController@index');
+        Route::post('/', 'EventController@store');
+        
+        //Slug parameter
+        Route::get('/{event}', 'EventController@show');
+        Route::put('/{event}', 'EventController@update');
+        Route::delete('/{event}', 'EventController@destroy');
+    });
+
 
 });
