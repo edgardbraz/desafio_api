@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Event;
 
 class EventController extends RestController
@@ -45,6 +46,7 @@ class EventController extends RestController
     {
         $request->validate([
             'name' => 'required|string',
+            'owner_id' => 'required|exists:users,id',
             'datetime_begin' => 'required|string',
             'datetime_end' => 'required|string',
             'status_id' => 'required|exists:event_statuses,id',
@@ -74,10 +76,12 @@ class EventController extends RestController
      */
     public function update(Request $request, Event $event)
     {
-        $event->update($request->input());
-
-        return parent::success(parent::SUCCESS, $event, '1 event was updated.');
-
+        if(Auth::id() == $event->owner_id) {
+            $event->update($request->input());
+            return parent::success(parent::SUCCESS, $event, '1 event was updated.');
+        } else {
+            return parent::success(parent::FORBIDDEN, null, "You don't have permissions to edit this event.");
+        }
     }
     
 

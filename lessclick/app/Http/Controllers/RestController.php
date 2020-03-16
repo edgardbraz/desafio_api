@@ -10,7 +10,8 @@ class RestController extends Controller
     const CREATED = 201;
     const NOT_FOUND = 404;
     const NOT_PROCESSED = 422;
-    
+    const FORBIDDEN = 403;
+
     public function success($code, $data = null, $message = null) {
         $response = [
             'success' => true, 
